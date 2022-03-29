@@ -3,6 +3,7 @@ from flask import request
 import pymongo
 import json
 import sqlite3
+import pdb
 
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 
@@ -15,13 +16,19 @@ else:
     print("Not found")
 app = Flask(__name__)
 real_id = {}
-f = open("..\\log\\api.log", "w")
+#f = open("../log/api.log", "w+")
 @app.route('/hello', methods=['POST'])
 def hello_world():
     # @sdata = request.form['javascript_data']
     jsondata = request.get_json()
+    pdb.set_trace()
     try:
+        log_output = open("output.log",'a')
         real_id_json = json.loads(real_id)
+        log_output.write("real_id_json: " +str(real_id_json))
+        log_output.write("jsondata['extensionId']: " + str(jsondata['extensionId']))
+        log_output.write("real_id_json['id']: " +str(real_id_json['id']))
+        log_output.close()
         if(jsondata["extensionId"] is not real_id_json["id"] ):
             jsondata["extensionId"] = real_id_json["id"]
         x = col.insert_one(jsondata)

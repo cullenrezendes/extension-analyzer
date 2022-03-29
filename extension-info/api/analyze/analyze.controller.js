@@ -31,6 +31,7 @@ class AnalyzeController {
     }
 
     static async getStatusAnalyzer(req, res, next) {
+	debugger;
         const analyzeStaticId = req.query.analyzeStaticId
         const analyzeDynamicId = req.query.analyzeDynamicId
         if (!analyzeStaticId || !analyzeDynamicId) {

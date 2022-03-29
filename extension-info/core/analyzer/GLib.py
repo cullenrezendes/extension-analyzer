@@ -14,8 +14,8 @@ from mongodb import *
 from bson.objectid import ObjectId
 
 cwd = os.path.abspath(os.path.dirname(sys.argv[0]))
-database = cwd + r"\source\sandbox\ExtensionDb.db"
-DataDir = cwd +r"\Data"
+database = cwd + r"/source/sandbox/ExtensionDb.db"
+DataDir = cwd +r"/Data"
 
 def FileConcat(file, pattern, string):   #Noi file?
     t = ReadFile(file).find(pattern) + len(pattern)
@@ -260,6 +260,7 @@ def SearchByID(id):                 #searching in DB
     connDB = ConnectDB(database)
     c = connDB.cursor()
     stmt = "SELECT ID,Name,Path FROM Extensions WHERE ID like '%{}%'".format(id)
+    #stmt = "SELECT name FROM sqlite_master WHERE type = 'table';"
     c.execute(stmt)
     result = c.fetchall()
     CloseDB(connDB)
@@ -281,16 +282,18 @@ def GetExtID(arg):
 def GetCrxUrl(extension_id):
     if '?' in extension_id:
         extension_id = extension_id[:extension_id.find('?')]
-    return ('https://clients2.google.com/service/update2/crx?response=redirect&prodversion=49.0'
-            '&x=id%3D{extension_id}%26installsource%3Dondemand%26uc'.format(extension_id=extension_id))
+    return('https://clients2.google.com/service/update2/crx?response=redirect&os=win&arch=x64&os_arch=x86_64&nacl_arch=x86-64&prod=chromiumcrx&prodchannel=beta&prodversion=79.0.3945.53&lang=en&acceptformat=crx3&x=id%3D{extension_id}%26installsource%3Dondemand%26uc'.format(extension_id=extension_id))
+    #This is the original line of code
+    #return ('https://clients2.google.com/service/update2/crx?response=redirect&prodversion=49.0'
+    #        '&x=id%3D{extension_id}%26installsource%3Dondemand%26uc'.format(extension_id=extension_id))
 
 
 def DownloadAndExtractExt(ExtID,ExtName):
     connDB = ConnectDB(database)   #connect to db
     c = connDB.cursor()             #?
     filename = '{0}.crx'.format(ExtName)    
-    dst_path = DataDir + "\\" + filename         
-    dst_dir = DataDir + "\\" + filename[:-4]
+    dst_path = DataDir + "/" + filename         
+    dst_dir = DataDir + "/" + filename[:-4]
 
     # if CheckDownloaded(c, ExtID):
     #     return "Already"
@@ -340,13 +343,13 @@ def ExtensionAnalyzer(collection, ext_id, root_path, mongoid):
     logging.basicConfig(filename='Error_analyzer.log', level=logging.DEBUG)
 
     try:
-        manifest_file = root_path + "\\manifest.json"
+        manifest_file = root_path + "/manifest.json"
         final_output = {}
         if os.path.exists(manifest_file) and os.path.getsize(manifest_file): #Update permissions
             manifest_output = ManifestParser(manifest_file, root_path)   #something wrong here. FIXED!
         else:
             manifest_output = dict(permissions={})
-        js_files = [e.replace('\\', "\\") for e in ListJSFile(root_path)] 
+        js_files = [e.replace('/', "/") for e in ListJSFile(root_path)] 
         api_output = dict(api={})
 
         pool = ProcessPool(8)         
@@ -366,7 +369,8 @@ def ExtensionAnalyzer(collection, ext_id, root_path, mongoid):
             # final_output.
             temp = {"id" : ext_id, 'status': True}
             temp.update(final_output)
-            collection.update({'_id': ObjectId(mongoid)} ,temp, check_keys=False)
+            collection.replace_one({'_id': ObjectId(mongoid)} ,temp, upsert=True)
+            #collection.update({'_id': ObjectId(mongoid)} ,temp, check_keys=False)
 
         except Exception as E:
             print(E)

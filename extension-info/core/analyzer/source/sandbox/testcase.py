@@ -14,12 +14,14 @@ import os
 import sys
 cwd = os.path.abspath(os.path.dirname(sys.argv[0]))
 
-driver_path = cwd + r"\driver\chromedriver.exe"
+#driver_path = cwd + r"\driver\chromedriver.exe"
+driver_path = cwd + r"/driver/chromedriver"
 checking_tab = False
 
 class Testcase():
   def setup_method(self, option):
-    self.driver = webdriver.Chrome(executable_path= driver_path, options=option)
+    #self.driver = webdriver.Chrome(executable_path=driver_path, options=option)
+    self.driver = webdriver.Chrome(options=option)
     self.driver.delete_all_cookies()
     self.vars = {}
   def teardown_method(self, method):
@@ -69,7 +71,8 @@ class Testcase():
       # self.driver.switch_to_window(self.driver.window_handles[2])
       self.driver.get("https://www.timo.vn/")
       time.sleep(2)
-      self.driver.find_element(By.XPATH, "//li[10]/ul/li/a/span[2]").click()
+      #self.driver.find_element(By.XPATH, "//li[10]/ul/li/a/span[2]").click()
+      self.driver.find_element(By.XPATH, "//li[10]/ul/li/a/span[2]")
       time.sleep(2)
       self.driver.find_element(By.ID, "usernameTxt").send_keys("") #username
       self.driver.find_element(By.ID, "pwRealTxt").send_keys("") #password
@@ -101,11 +104,13 @@ class Testcase():
       global checking_tab
       if(checking_tab == True):
         self.driver.switch_to_window(self.driver.window_handles[0])
-        self.driver.execute_script("window.open('https://www.paypal.com/vn/home')")
-        self.driver.switch_to_window(self.driver.window_handles[1])
+        #self.driver.execute_script("window.open('https://www.paypal.com/vn/home')")
+        self.driver.get("https://www.paypal.com")
+        #self.driver.switch_to_window(self.driver.window_handles[1])
       else:
-        self.driver.execute_script("window.open('https://www.paypal.com/vn/home')")
-        self.driver.switch_to_window(self.driver.window_handles[2])
+        #self.driver.execute_script("window.open('https://www.paypal.com/vn/home')")
+        #self.driver.switch_to_window(self.driver.window_handles[2])
+        self.driver.get("https://www.paypal.com")
         
       # self.driver.get("https://www.paypal.com/vn/home")
       self.driver.find_element(By.ID, "ul-btn").click()
@@ -131,15 +136,15 @@ class Testcase():
       self.driver.execute_script("window.scrollTo(0,3000)")
     
       #can't login because of OTP
-      self.driver.find_element(By.CSS_SELECTOR, "#XSxnGG_-a2X5p1gGqNy5UQ-product-carousel .feed-carousel-card:nth-child(4) .product-image").click()
-      self.driver.find_element(By.CSS_SELECTOR, "#color_name_2_price > .a-size-mini").click()
-      element = self.driver.find_element(By.CSS_SELECTOR, "#a-autoid-19-announce .imgSwatch")
-      time.sleep(3)
+      #self.driver.find_element(By.CSS_SELECTOR, "#XSxnGG_-a2X5p1gGqNy5UQ-product-carousel .feed-carousel-card:nth-child(4) .product-image").click()
+      #self.driver.find_element(By.CSS_SELECTOR, "#color_name_2_price > .a-size-mini").click()
+      #element = self.driver.find_element(By.CSS_SELECTOR, "#a-autoid-19-announce .imgSwatch")
+      #time.sleep(3)
       self.driver.execute_script("window.scrollTo(0,1800)")
       element = self.driver.find_element(By.LINK_TEXT, "Try Prime")
 
       self.driver.find_element(By.LINK_TEXT, "Today\'s Deals").click()
-      element = self.driver.find_element(By.CSS_SELECTOR, "#\\31 03_dealView_2 #dealImage .a-row:nth-child(2)")
+      #element = self.driver.find_element(By.CSS_SELECTOR, "#\\31 03_dealView_2 #dealImage .a-row:nth-child(2)")
 
       self.driver.execute_script("window.scrollTo(0,276)")
       element = self.driver.find_element(By.CSS_SELECTOR, "body")
@@ -158,10 +163,10 @@ class Testcase():
       self.driver.get("https://shopee.vn/")
       time.sleep(3)
      
-      self.driver.find_element(By.CSS_SELECTOR, ".image-carousel__item:nth-child(3) .home-category-list__category-grid:nth-child(1) .\\_3ZDC1p > .SpPcVL").click()
+      #self.driver.find_element(By.CSS_SELECTOR, ".image-carousel__item:nth-child(3) .home-category-list__category-grid:nth-child(1) .\\_3ZDC1p > .SpPcVL").click()
       time.sleep(3)
       
-      self.driver.find_element(By.CSS_SELECTOR, ".image-carousel__item:nth-child(1) .ofs-carousel__item:nth-child(1) .ofs-carousel__cover-image").click()
+      #self.driver.find_element(By.CSS_SELECTOR, ".image-carousel__item:nth-child(1) .ofs-carousel__item:nth-child(1) .ofs-carousel__cover-image").click()
       time.sleep(3)
 
       self.driver.execute_script("window.scrollTo(1000,2000)")
@@ -186,7 +191,7 @@ class Testcase():
       print("[*] Twitter (Social Network)")
       self.driver.get("https://twitter.com/")
       time.sleep(5)
-      self.driver.find_element(By.XPATH, "//input[@value=\'Log in\']").click()
+      #self.driver.find_element(By.XPATH, "//input[@value=\'Log in\']").click()
       time.sleep(2)
       self.driver.find_element(By.CSS_SELECTOR, ".js-username-field").click()
       self.driver.find_element(By.CSS_SELECTOR, ".js-username-field").send_keys("")   #username

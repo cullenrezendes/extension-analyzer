@@ -7,10 +7,11 @@ from operator import itemgetter
 import os	
 import sys	
 from bson.objectid import ObjectId
+import pdb
 
 cwd = os.path.abspath(os.path.dirname(sys.argv[0]))	
 api_file = cwd +r"\api.json"	
-path_white_list_dns = cwd + r"\white_list_dns.json"
+path_white_list_dns = cwd + r"/white_list_dns.json"
 
 white_list_testcase =["facebook","fb","google","timo","paypal","amazon","shopee","twitter","bitdefender","norton","kaspersky","eset","myvisualiq","eservice","beacons"]
 
@@ -378,7 +379,7 @@ def AnalyzerOnlyOneExtension(idx, mongoId = None):
         beauty_report['final_result'] = "Clean"
 
     col = init_database("REPORT_FINAL")
-    col.update({ '_id': ObjectId(mongoId) }, beauty_report, check_keys=False)
+    col.replace_one({ '_id': ObjectId(mongoId) }, beauty_report, upsert=True)
     print("[+] Inserted: @@@%s@@@"%(idx))
     
 def AnalyzerAllExtension():
@@ -552,4 +553,5 @@ if __name__ == "__main__":
     # for idx in open(r"G:\New\Extensions\KhoaLuan_Git\extesion_monitored.txt").readlines():
     #     idxr = idx.replace("\n","")
     #     AnalyzerOnlyOneExtension(idxr)
+    pdb.set_trace()
     AnalyzerAllExtension()

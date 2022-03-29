@@ -89,8 +89,8 @@ class AnalyzerService {
     }
 
     static async GetStatusAnalyzer(analyzeStaticId, analyzeDynamicId) {
-
-        const url = 'mongodb://localhost:27017';
+	debugger;
+        const url = 'mongodb://127.0.0.1:27017';
         // Database Name
         const dbName = 'Thesis';
         const dbName2 = 'ChromeExtension';
@@ -150,9 +150,9 @@ class AnalyzerService {
             return outputData
         }
         const outputData_report = await collection_report.insertOne({ status: false });
-
-        const analyzePyPath = path.resolve(__dirname, 'source\\sandbox\\sandbox.py')
-        spawn('python3', [analyzePyPath, '-l', link, '-mid', outputData_report.ops[0]._id], { shell: true, cwd: path.resolve(__dirname) }) //stdout == Output(Ext)
+        debugger;
+        const analyzePyPath = path.resolve(__dirname, 'source/sandbox/sandbox.py')
+        var process = spawn('python3', [analyzePyPath, '-l', link, '-mid', outputData_report.ops[0]._id], { shell: true, cwd: path.resolve(__dirname) }) //stdout == Output(Ext)
         
 
         return outputData_report.ops[0]

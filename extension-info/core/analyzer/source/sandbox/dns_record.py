@@ -13,7 +13,7 @@ import socket
 from collections import defaultdict
 
 cwd = os.path.abspath(os.path.dirname(sys.argv[0]))
-log_dns_path = cwd +r"\log\log_dns.txt"
+log_dns_path = cwd +r"/log/log_dns.txt"
 file_log = open(log_dns_path, "a+")
 
 hostname = socket.gethostname()    
@@ -131,6 +131,6 @@ def parse_dnspkt(idx,pkt):
 #return parse_dnspkt
 
 def sniffer(idx):
-    os.system("ipconfig /flushdns")
+    #os.system("ipconfig /flushdns")
     sniff(filter="udp port 53", prn=partial(parse_dnspkt,idx))
     

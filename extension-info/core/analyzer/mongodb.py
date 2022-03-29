@@ -3,6 +3,7 @@ import os
 def ConnectMongoDB(collection):
   client = pymongo.MongoClient("localhost",27017)
   my_mongo_db = client["Thesis"]    #database
+  print("Here is my collection: " + str(collection))
   return my_mongo_db[collection]    #collection
 
 def InsertMongoDB(ext_id):

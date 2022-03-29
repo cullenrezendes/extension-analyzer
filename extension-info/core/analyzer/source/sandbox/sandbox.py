@@ -20,7 +20,7 @@ from pathlib import Path
 from bson.objectid import ObjectId
 
 cwd = os.path.abspath(os.path.dirname(sys.argv[0]))
-database = cwd + r"\ExtensionDb.db"
+database = cwd + r"/ExtensionDb.db"
 mycol_network = init_database("NETWORK")
 mycol_report = init_database("REPORT_FINAL")
 mycol_risk = init_thesis("Risk")
@@ -84,13 +84,20 @@ def AnalyzerDynamic(mycol,IDX,PathExt, mongoId = None):
     # Profile 
     # Load extension   
     # 
-    profile_path = os.getenv('LOCALAPPDATA') + r"\Google\Chrome\User Data\Profile 1"     
+    #profile_path = os.getenv('LOCALAPPDATA') + r"\Google\Chrome\User Data\Profile 1"     
+    profile_path = r"/home/kali/.config/google-chrome/temp"
+    #profile_path = r"/home/kali/Desktop/extension-analyzer/extension-info/core/analyzer/source/sandbox"
     options_chrome = webdriver.ChromeOptions()
     #unpacked_extension_path = extension_folder + "\\" + extension
     options_chrome.add_argument("--proxy-server={}".format(client.proxy))
-    options_chrome.add_argument("user-data-dir=" + profile_path)
+    options_chrome.add_argument("--user-data-dir=" + profile_path)
     options_chrome.add_argument('--load-extension={}'.format(PathExt))
     options_chrome.add_argument("--start-maximized")
+    options_chrome.add_argument('--ignore-ssl-errors=yes')
+    options_chrome.add_argument('--ignore-certificate-errors')
+    options_chrome.add_argument("--headless")
+    options_chrome.add_argument("--disable-dev-shm-usage")
+    options_chrome.add_argument("--no-sandbox")
     options_chrome.add_experimental_option("excludeSwitches", ["enable-automation"])
     options_chrome.add_experimental_option('useAutomationExtension', False)
     def HoneyPage():
@@ -111,7 +118,7 @@ def AnalyzerDynamic(mycol,IDX,PathExt, mongoId = None):
         run.teardown_method('GET')  
     HoneyPage()
     def write_network_log(mycol,IDX,client):
-        network_log = cwd +"\\log\\" + IDX + ".har"
+        network_log = cwd +"/log/" + IDX + ".har"
         #network_log = r"G:\New\Extensions\KhoaLuan\source\log" +"\\"+ IDX + ".har"       
         data_store_db = {}
         data_store_db["idx"] = IDX

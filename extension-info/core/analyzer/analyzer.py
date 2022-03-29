@@ -12,6 +12,9 @@ def main():
     parser.add_argument("-mid", "--mongoid",help="Mongo ID",required=True)
     parser.add_argument("-a", "--all",help="All",required=False)
     args = parser.parse_args()
+    log_output = open("logged.output","a")
+    log_output.write("Here is the link: " + str(args.link) + ", Here is the MongoDB ID: " + str(args.mongoid))
+    log_output.close()
     if args.link:
         ID, Name = GetExtID(args.link)   #get ID, ext name
         if (CheckMongoDB(ID) == None):

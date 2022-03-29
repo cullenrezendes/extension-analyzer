@@ -2,7 +2,7 @@ from browsermobproxy import Server
 import sys
 import os
 cwd = os.path.abspath(os.path.dirname(sys.argv[0]))
-path_browsermod = cwd +r"\proxy\browsermob-proxy-2.1.4\bin\browsermob-proxy.bat"
+path_browsermod = cwd +r"/proxy/browsermob-proxy-2.1.4/bin/browsermob-proxy"
 class ProxyManger:
     # Path to browser-mod 
     __BMP = path_browsermod
